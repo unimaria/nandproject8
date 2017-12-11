@@ -55,8 +55,6 @@ class Parser:
         :param str_to_remove: string
         :return: string without whitespaces
         """
-        #TODO potencial loss variable pop R1 0 = popR10
-        #str_to_remove = ''.join(str_to_remove.split())
         str_to_remove = str_to_remove.strip()
         return str_to_remove
 
