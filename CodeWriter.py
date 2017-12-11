@@ -79,7 +79,7 @@ class CodeWriter:
             elif command == 'lt':
                 towrite = ltstr(CodeWriter.iteration)
                 CodeWriter.iteration += 1
-                
+
             elif command == 'eq':
                 towrite = eqstr(CodeWriter.iteration)
                 CodeWriter.iteration += 1
@@ -200,7 +200,7 @@ class CodeWriter:
         towrite = "@SP\n"\
                   "AM = M-1\n"\
                   "D=M\n"\
-                  "@" + label + "$" + scope + "\n"\
+                  "@" + scope + "$" + label + "\n"\
                   "D;JNE\n"  # if true the stack will contain -1
         self.file.write(towrite)
 
