@@ -1,5 +1,5 @@
 #######################################################
-# Authors: jakedn,
+# Authors: jakedn, unimaria
 # This is a file that i didnt yet decide what to write here
 #######################################################
 

@@ -7,14 +7,12 @@ def pushstack():
            '@SP\n' \
            'M=M+1\n'
 
-
 def popstack(str):
     return '@SP\n' \
            'AM=M-1\n' \
            'D=M\n' \
            '@' + str + '\n' \
            'M=D\n'
-
 
 def eqstr(i):
     return '@SP\n' \
@@ -122,7 +120,6 @@ def gtstr(i):
         'A=M-1\n'\
         'M=D\n' \
         '(END' + str(i) + ')\n'
-
 
 def ltstr(i):
     return '@SP\n' \
