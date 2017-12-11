@@ -1,6 +1,7 @@
 
-def pushstack():
-    return 'D=M\n' \
+def pushstack(str):
+    return '@' + str + '\n' \
+           'D=M\n' \
            '@SP\n' \
            'A=M\n' \
            'M=D\n' \

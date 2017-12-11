@@ -17,7 +17,7 @@ class CodeWriter:
     segments = {'argument': 'ARG',
                 'local': 'LCL',
                 'constant': '-1',
-                'pointer': 'THIS',
+                'pointer': '3', #change from project 7 (from THIS to 3)
                 'this': 'THIS',
                 'that': 'THAT',
                 'temp': '5'
@@ -130,17 +130,21 @@ class CodeWriter:
                           'M=M+1\n'
 
             elif seg == 'static':
-                towrite = '@' + self.file_name + '.' + str(index) + '\n' + pushstack()
+                towrite = pushstack(self.file_name + '.' + str(index))
+                #towrite = '@' + self.file_name + '.' + str(index) + '\n' + pushstack()
 
             elif seg == 'pointer':
                 if index == 0:
-                    towrite = '@THIS\n' + pushstack()
+                    pushstack('THIS')
+                    #towrite = '@THIS\n' + pushstack()
 
                 if index == 1:
-                    towrite = '@THAT\n' + pushstack()
+                    pushstack('THAT')
+                    #towrite = '@THAT\n' + pushstack()
 
             elif seg == 'temp':
-                towrite = '@' + str(5 + index) + '\n' + pushstack()
+                pushstack(str(5 + index))
+                #towrite = '@' + str(5 + index) + '\n' + pushstack()
 
             else:
                 towrite = '@' + str(index) + '\n' \
@@ -198,11 +202,11 @@ class CodeWriter:
                    'A=M\n' \
                    'M=D\n' \
                    '@SP\n' \
-                   'M=M+1\n'\
-                   '@LCL\n' + pushstack() + \
-                   '@ARG\n' + pushstack() + \
-                   '@THIS\n' + pushstack() + \
-                   '@THAT\n' + pushstack() + \
+                   'M=M+1\n' +\
+                   pushstack('LCL') + \
+                   pushstack('ARG') + \
+                   pushstack('THIS')+ \
+                   pushstack('THAT')+ \
                    '@SP\n'\
                    'D=M\n'\
                    '@5\n'\
@@ -221,30 +225,34 @@ class CodeWriter:
         self.file.write(towrite)
 
     def writefunction(self, functionname, numlocals):
-        towrite = '(' + functionname + ')\n'\
-                  '@R13\n'\
-                  'M=0\n'\
-                  '(LOOP$' + functionname + ')\n'\
-                  '@0\n'\
-                  'D=A\n' \
-                  '@SP\n' \
-                  'A=M\n' \
-                  'M=D\n' \
-                  '@SP\n' \
-                  'M=M+1\n'\
-                  '@R13\n'\
-                  'M=M+1\n'\
-                  'D=M\n'\
-                  '@' + str(numlocals) + '\n'\
-                  'D=M-D\n'\
-                  '@LOOP$' + functionname + '\n'\
-                  'D;JGT\n'
+        #todo changed code thats in comment need to undo change or remove comment
+        towrite = '(' + functionname + ')\n' \
+                                       ''
+        # towrite = '(' + functionname + ')\n'\
+        #           '@R13\n'\
+        #           'M=0\n'\
+        #           '(LOOP$' + functionname + ')\n'\
+        #           '@0\n'\
+        #           'D=A\n' \
+        #           '@SP\n' \
+        #           'A=M\n' \
+        #           'M=D\n' \
+        #           '@SP\n' \
+        #           'M=M+1\n'\
+        #           '@R13\n'\
+        #           'M=M+1\n'\
+        #           'D=M\n'\
+        #           '@' + str(numlocals) + '\n'\
+        #           'D=M-D\n'\
+        #           '@LOOP$' + functionname + '\n'\
+        #           'D;JGT\n'
         self.file.write(towrite)
 
     def writereturn(self):
         """
         writes return to file
         """
+        #todo bug cant use R14 R15 because of nesting replace them with push const
         # R14 is used as endFrame and R15 is used as retAddr
         towrite = '@LCL\n'\
                   'D=M\n'\
