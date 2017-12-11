@@ -93,8 +93,12 @@ class Parser:
                     Parser.COMMENT) or \
                 Parser.current_command.startswith(Parser.EMPTY_LINE_2):
             Parser.current_command = Parser.opened_file.readline()
-        Parser.current_command = Parser.remove_whitespace(Parser.current_command)
         Parser.current_command = Parser.remove_comments(Parser.current_command)
+        Parser.current_command = Parser.remove_whitespace(Parser.current_command)
+        print(Parser.current_command)
+
+
+
 
 
     @staticmethod
