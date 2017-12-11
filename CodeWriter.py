@@ -1,3 +1,4 @@
+#!/usr/python
 ###################################
 # Authors : jakedn, unimaria
 # This is the Codewriter module as described in chapter
@@ -6,7 +7,7 @@
 
 
 from Parser import Parser
-from os.path import basename, dirname
+from os.path import basename, dirname, join
 from functions import *
 
 
@@ -72,14 +73,15 @@ class CodeWriter:
         towrite = ''
         if command in CodeWriter.BINOP:
             if command == 'gt':
-                towrite = gtstr(CodeWriter.iteration, Parser.current_function) # changed TODO make sure its good
+                towrite = gtstr(CodeWriter.iteration)
                 CodeWriter.iteration += 1
-            elif command == 'lt':
 
-                towrite = ltstr(CodeWriter.iteration, Parser.current_function) # changed TODO make sure its good
+            elif command == 'lt':
+                towrite = ltstr(CodeWriter.iteration)
                 CodeWriter.iteration += 1
+                
             elif command == 'eq':
-                towrite = eqstr(CodeWriter.iteration, Parser.current_function) # changed TODO make sure its good
+                towrite = eqstr(CodeWriter.iteration)
                 CodeWriter.iteration += 1
             else:
                 towrite = '@SP\n' \
