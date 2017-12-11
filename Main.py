@@ -4,7 +4,7 @@
 #######################################################
 
 from os import listdir, getcwd
-from os.path import isfile, join, isdir, exists
+from os.path import isfile, join, isdir, exists, split
 from CodeWriter import CodeWriter
 from Parser import Parser
 import sys
@@ -30,7 +30,10 @@ def getfiles(directory):
 
 def translateVM(path):
     files = getfiles(path)
-    codewriter = CodeWriter(files[0])
+    dir_var = None
+    if isdir(path):
+        dir_var = split(path)[1]
+    codewriter = CodeWriter(files[0], dir_var)
     for cur_file in files:
         codewriter.setfilename(cur_file)
         Parser.initialize(cur_file)
@@ -65,7 +68,7 @@ def translateVM(path):
             elif command_type == Parser.C_RETURN:
                 codewriter.writereturn()
             Parser.advance()
-        codewriter.close()
+    codewriter.close()
 
 
 if __name__ == '__main__':

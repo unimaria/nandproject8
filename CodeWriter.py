@@ -6,7 +6,7 @@
 
 
 from Parser import Parser
-from os.path import basename
+from os.path import basename, dirname
 from functions import *
 
 
@@ -36,13 +36,24 @@ class CodeWriter:
              "not": '!'
             }
 
-    def __init__(self, file_path):
+    SYS_CODE = '@256\n'\
+               'D=A\n'\
+               '@SP\n'\
+               'M=D\n'
+
+    def __init__(self, file_path, directory):
         """
         constructor
         :param file_path: file directory path
         """
         self.file_name = basename(file_path)[:-3]
-        self.file = open(file_path[0:-3]+'.asm', "w")
+        # if it is directory the asm file should have the name of the directory
+        if directory is not None:
+            self.file = open(dirname(file_path) + "/" + directory + '.asm', "w")
+        else:
+            self.file = open(file_path[0:-3]+'.asm', "w")
+        self.file.write(self.SYS_CODE)
+        self.writecall("Sys.init", 0)  # calls Sys.init
 
     def setfilename(self, file_path):
         """
@@ -51,7 +62,7 @@ class CodeWriter:
         """
         CodeWriter.iteration = 0
         self.file_name = basename(file_path)[:-3]
-        self.file = open(file_path[0:-3] + '.asm', "w")
+        #self.file = open(file_path[0:-3] + '.asm', "w")
 
     def writearithmetic(self, command):
         """
@@ -222,7 +233,7 @@ class CodeWriter:
 
     def writefunction(self, functionname, numlocals):
         towrite = '(' + functionname + ')\n'\
-                  '@R13\n'\
+                  '@R15\n'\
                   'M=0\n'\
                   '(LOOP$' + functionname + ')\n'\
                   '@0\n'\
@@ -232,11 +243,11 @@ class CodeWriter:
                   'M=D\n' \
                   '@SP\n' \
                   'M=M+1\n'\
-                  '@R13\n'\
+                  '@R15\n'\
                   'M=M+1\n'\
                   'D=M\n'\
                   '@' + str(numlocals) + '\n'\
-                  'D=M-D\n'\
+                  'D=A-D\n'\
                   '@LOOP$' + functionname + '\n'\
                   'D;JGT\n'
         self.file.write(towrite)
@@ -267,17 +278,30 @@ class CodeWriter:
                   '@SP\n'\
                   'M=D+1\n'\
                   '@R14\n'\
-                  'A=M\n'\
+                  'A=M-1\n'\
                   'D=M\n'\
                   '@THAT\n'\
-                  'M=D-1\n'\
+                  'M=D\n'\
+                  '@R14\n'\
+                  'M=M-1\n'\
+                  'A=M-1\n'\
+                  'D=M\n'\
                   '@THIS\n'\
-                  'M=D-2'\
+                  'M=D\n' \
+                  '@R14\n' \
+                  'M=M-1\n' \
+                  'A=M-1\n' \
+                  'D=M\n' \
                   '@ARG\n'\
-                  'M=D-3\n'\
+                  'M=D\n' \
+                  '@R14\n' \
+                  'M=M-1\n' \
+                  'A=M-1\n' \
+                  'D=M\n' \
                   '@LCL\n'\
-                  'M=D-4\n'\
+                  'M=D\n'\
                   '@R15\n'\
+                  'A=M\n'\
                   '0;JMP\n'
         self.file.write(towrite)
 
