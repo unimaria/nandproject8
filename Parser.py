@@ -39,6 +39,7 @@ class Parser:
         """
         Parser.file = file_path
         Parser.current_command = None
+        current_function = None
 
     @staticmethod
     def open_file():
@@ -95,11 +96,6 @@ class Parser:
             Parser.current_command = Parser.opened_file.readline()
         Parser.current_command = Parser.remove_comments(Parser.current_command)
         Parser.current_command = Parser.remove_whitespace(Parser.current_command)
-        print(Parser.current_command)
-
-
-
-
 
     @staticmethod
     def command_type():
@@ -116,7 +112,7 @@ class Parser:
         elif Parser.current_command.startswith(Parser.CALL_STR):
             return Parser.C_CALL
         elif Parser.current_command.startswith(Parser.RETURN_STR):
-            Parser.current_function = None  # end of current function
+            #Parser.current_function = None  # end of current function
             return Parser.C_RETURN
         elif Parser.current_command.startswith(Parser.FUNCTION_STR):
             return Parser.C_FUNCTION
