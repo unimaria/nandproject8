@@ -226,26 +226,24 @@ class CodeWriter:
 
     def writefunction(self, functionname, numlocals):
         #todo changed code thats in comment need to undo change or remove comment
-        towrite = '(' + functionname + ')\n' \
-                                       ''
-        # towrite = '(' + functionname + ')\n'\
-        #           '@R13\n'\
-        #           'M=0\n'\
-        #           '(LOOP$' + functionname + ')\n'\
-        #           '@0\n'\
-        #           'D=A\n' \
-        #           '@SP\n' \
-        #           'A=M\n' \
-        #           'M=D\n' \
-        #           '@SP\n' \
-        #           'M=M+1\n'\
-        #           '@R13\n'\
-        #           'M=M+1\n'\
-        #           'D=M\n'\
-        #           '@' + str(numlocals) + '\n'\
-        #           'D=M-D\n'\
-        #           '@LOOP$' + functionname + '\n'\
-        #           'D;JGT\n'
+        towrite = '(' + functionname + ')\n'\
+                  '@R13\n'\
+                  'M=0\n'\
+                  '(LOOP$' + functionname + ')\n'\
+                  '@0\n'\
+                  'D=A\n' \
+                  '@SP\n' \
+                  'A=M\n' \
+                  'M=D\n' \
+                  '@SP\n' \
+                  'M=M+1\n'\
+                  '@R13\n'\
+                  'M=M+1\n'\
+                  'D=M\n'\
+                  '@' + str(numlocals) + '\n'\
+                  'D=M-D\n'\
+                  '@LOOP$' + functionname + '\n'\
+                  'D;JGT\n'
         self.file.write(towrite)
 
     def writereturn(self):
