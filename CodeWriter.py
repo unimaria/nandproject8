@@ -14,7 +14,7 @@ from functions import *
 class CodeWriter:
 
     iteration = 0
-
+    func_iterator = 0
     segments = {'argument': 'ARG',
                 'local': 'LCL',
                 'constant': '-1',
@@ -53,6 +53,7 @@ class CodeWriter:
             self.file = open(join(dirname(file_path), directory) + '.asm', "w")
         else:
             self.file = open(file_path[0:-3]+'.asm', "w")
+
         self.file.write(self.SYS_CODE)
         self.writecall("Sys.init", 0)  # calls Sys.init
 
@@ -180,7 +181,7 @@ class CodeWriter:
             scope = Parser.current_function
         else:
             scope = self.file_name
-        towrite = "(" + label + "$" + scope + ")" + "\n"
+        towrite = "(" + scope + "$" + label + ")" + "\n"
         self.file.write(towrite)
 
     def writegoto(self, label):
@@ -188,7 +189,7 @@ class CodeWriter:
             scope = Parser.current_function
         else:
             scope = self.file_name
-        towrite = "@" + label + "$" + scope + "\n" \
+        towrite = "@" + scope + "$" + label + "\n" \
                   "0;JMP\n"
         self.file.write(towrite)
 
@@ -205,7 +206,7 @@ class CodeWriter:
         self.file.write(towrite)
 
     def writecall(self, functionname, numargs):
-        towrite = '@RETURN$' + functionname + '\n' \
+        towrite = '@RETURN$' + functionname + str(CodeWriter.func_iterator) +'\n' \
                    'D=A\n' \
                    '@SP\n' \
                    'A=M\n' \
@@ -230,7 +231,8 @@ class CodeWriter:
                    'M=D\n'\
                    '@' + functionname + '\n'\
                    '0;JMP\n'\
-                   '(RETURN$' + functionname + ')\n'
+                   '(RETURN$' + functionname + str(CodeWriter.func_iterator) + ')\n'
+        CodeWriter.func_iterator += 1
         self.file.write(towrite)
 
     def writefunction(self, functionname, numlocals):
