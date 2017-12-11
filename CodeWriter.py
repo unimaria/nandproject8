@@ -49,7 +49,7 @@ class CodeWriter:
         self.file_name = basename(file_path)[:-3]
         # if it is directory the asm file should have the name of the directory
         if directory is not None:
-            self.file = open(dirname(file_path) + "/" + directory + '.asm', "w")
+            self.file = open(join(dirname(file_path), directory) + '.asm', "w")
         else:
             self.file = open(file_path[0:-3]+'.asm', "w")
         self.file.write(self.SYS_CODE)
@@ -178,7 +178,7 @@ class CodeWriter:
             scope = Parser.current_function
         else:
             scope = self.file_name
-        towrite = "(" + label + ":" + scope + ")" + "\n"
+        towrite = "(" + label + "$" + scope + ")" + "\n"
         self.file.write(towrite)
 
     def writegoto(self, label):
@@ -186,7 +186,7 @@ class CodeWriter:
             scope = Parser.current_function
         else:
             scope = self.file_name
-        towrite = "@" + label + ":" + scope + "\n" \
+        towrite = "@" + label + "$" + scope + "\n" \
                   "0;JMP\n"
         self.file.write(towrite)
 
@@ -198,7 +198,7 @@ class CodeWriter:
         towrite = "@SP\n"\
                   "AM = M-1\n"\
                   "D=M\n"\
-                  "@" + label + ":" + scope + "\n"\
+                  "@" + label + "$" + scope + "\n"\
                   "D;JNE\n"  # if true the stack will contain -1
         self.file.write(towrite)
 
@@ -235,6 +235,10 @@ class CodeWriter:
         towrite = '(' + functionname + ')\n'\
                   '@R15\n'\
                   'M=0\n'\
+                  '@' + str(numlocals) + '\n'\
+                  'D=A\n'\
+                  '@END$' + functionname + '\n'\
+                  'D;JEQ\n'\
                   '(LOOP$' + functionname + ')\n'\
                   '@0\n'\
                   'D=A\n' \
@@ -249,7 +253,8 @@ class CodeWriter:
                   '@' + str(numlocals) + '\n'\
                   'D=A-D\n'\
                   '@LOOP$' + functionname + '\n'\
-                  'D;JGT\n'
+                  'D;JGT\n'\
+                  '(END$' + functionname + ')\n'
         self.file.write(towrite)
 
     def writereturn(self):
