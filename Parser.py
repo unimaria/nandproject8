@@ -39,7 +39,7 @@ class Parser:
         """
         Parser.file = file_path
         Parser.current_command = None
-        current_function = None
+        Parser.current_function = None
 
     @staticmethod
     def open_file():
