@@ -1,0 +1,15 @@
+jakedn, unimaria
+name: jacob ness , email: jacob.ness@mail.huji.ac.il , tz: 209863000
+name: maria tseytlin, maria.tseytlin@mail.huji.ac.il , tz: 316984368
+Project7
+
+Files:
+CodeWriter.py - code for CodeWriter module like in chapter 7
+functions.py - code for functions that assist our program
+Parser.py - code for our parser module like in chapter 7
+Main.py - main file controls the flow of our program
+Makefile - makefile for our program
+VMtranslator - program executable.
+
+
+Personal commentary: Nonne
